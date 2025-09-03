@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markaba.Ma</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e3a8a;
+            --bg-light: #f4f6f9;
+            --card-shadow: rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: rgba(0, 0, 0, 0.15);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 1em 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header h2 {
+            font-weight: 700;
+            font-size: 1.5em;
+        }
+
+        nav a {
+            margin-left: 1.5em;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffb400;
+        }
+
+        #userName {
+            font-weight: 600;
+            margin-left: 1em;
+        }
+
+        #logoutBtn {
+            padding: 8px 16px;
+            background: #e53e3e;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .hero {
+            background: url('https://source.unsplash.com/1600x900/?car-banner') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 8em 2em 5em;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 1.5em;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1em;
+            text-align: center;
+        }
+
+        .circle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border: 2px solid white;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .circle-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .circle-btn .emoji {
+            font-size: 50px;
+            margin-bottom: 5px;
+        }
+
+        .circle-btn span {
+            font-weight: bold;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        section {
+            padding: 3em 5%;
+            text-align: center;
+        }
+
+        .featured-cars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2em;
+            margin-top: 2em;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-card-content {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .car-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .car-card h3 {
+            margin: 1em 0 0.5em;
+            font-size: 1.2em;
+        }
+
+        .car-card p {
+            margin: 0 0 1em;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .why {
+            background: #fff;
+            padding: 3em 5%;
+        }
+
+        .why p {
+            font-size: 1.1em;
+            margin-top: 1em;
+        }
+
+        .testimonials {
+            background: #f1f1f1;
+            padding: 3em 5%;
+        }
+
+        .testimonials p {
+            font-style: italic;
+            font-size: 1.1em;
+            margin-top: 1em;
+        }
+
+        .newsletter input {
+            padding: 0.8em;
+            width: 250px;
+            max-width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .newsletter button {
+            padding: 0.85em 1.5em;
+            border: none;
+            background: #ffb400;
+            color: #111;
+            font-weight: bold;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .newsletter button:hover {
+            background: #e09e00;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            padding: 1em;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .card {
+            max-width: 420px;
+            width: 100%;
+            background: #1e293b;
+            padding: 40px 32px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        .muted {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 14px 0 22px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn.google {
+            background: #4285F4;
+            color: #fff;
+        }
+
+        .btn.google:hover {
+            background: #357ae8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0b141f;
+            color: #e6f9f0;
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: none;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            z-index: 3000;
+        }
+
+        /* Inventory Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 1400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1rem;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal.open .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn-inventory {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            line-height: 0;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            flex-wrap: wrap;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .car-card-inv {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .car-card-inv:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px var(--card-hover-shadow);
+        }
+
+        .car-card-inv img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform var(--transition-speed);
+        }
+
+        .car-card-inv:hover img {
+            transform: scale(1.05);
+        }
+
+        .car-info-inv {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .car-info-inv h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .car-info-inv p {
+            margin: 0.3rem 0;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .price {
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .whatsapp-btn,
+        .loan-btn {
+            flex: 1;
+            padding: 0.7rem 1.2rem;
+            text-align: center;
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            border: none;
+            cursor: pointer;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+        }
+
+        .whatsapp-btn:hover {
+            background: #1ebe5d;
+        }
+
+        .loan-btn {
+            background: #ff7f50;
+        }
+
+        .loan-btn:hover {
+            background: #ff6347;
+        }
+
+        /* Loan Simulator Modal styles */
+        .simulator-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .simulator-modal-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            text-align: left;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .simulator-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .loan-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .loan-form label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .loan-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .payment-box {
+            background: #ff7f50;
+            color: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .summary-card {
+            background: #f0f4f8;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .totals-card {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: #333;
+        }
+
+        .totals-card strong {
+            font-size: 1.1rem;
+        }
+
+        #schedule-container {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .simulator-modal-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            table-layout: fixed;
+        }
+
+        .simulator-modal-content th,
+        .simulator-modal-content td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .simulator-modal-content th {
+            background: #2a5298;
+            color: #fff;
+        }
+
+        .simulator-modal-content tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        @media (max-width: 600px) {
+            .payment-box {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Popup Styling - New */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .popup-content h2 {
+            margin-top: 0;
+        }
+
+        .popup-content p strong {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .close-btn-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Markaba.Ma</h2>
+        <div>
+            <button id="openModalBtn" style="padding:8px 16px; font-weight:bold; cursor:pointer;">Sign Up</button>
+            <span id="userName"></span>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Drive Your Dream</h1>
+        <p>Discover it at Markaba.Ma</p>
+        <div class="cta-buttons" id="heroButtons">
+            <button class="circle-btn" data-category="Car">
+                <div class="emoji">🚗</div>
+                <span>Cars</span>
+            </button>
+            <button class="circle-btn" data-category="Bike">
+                <div class="emoji">🏍️</div>
+                <span>Bikes</span>
+            </button>
+            <button class="circle-btn" data-category="Truck">
+                <div class="emoji">🚚</div>
+                <span>Trucks</span>
+            </button>
+            <button class="circle-btn" data-category="Ship">
+                <div class="emoji">🚢</div>
+                <span>Ships</span>
+            </button>
+            <button class="circle-btn" data-category="Aircraft">
+                <div class="emoji">✈️</div>
+                <span>Aircraft</span>
+            </button>
+            <button class="circle-btn" data-category="Accessories">
+                <div class="emoji">🔩</div>
+                <span>Accessories</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="featured">
+        <h2>Featured Listings</h2>
+        <div class="featured-cars">
+        </div>
+    </section>
+
+    <section class="why">
+        <h2>Why Choose Us</h2>
+        <p>Trusted Dealers • Easy Financing • Nationwide Delivery</p>
+    </section>
+
+    <section class="testimonials">
+        <h2>What Our Customers Say</h2>
+        <p>“Markaba made buying my vehicle so easy!”
+            ★★★★★</p>
+    </section>
+
+    <section class="newsletter">
+        <h2>Stay Updated</h2>
+        <form id="newsletter-form" action="https://formspree.io/f/xgvzbjpw" method="POST">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2025 Markaba.Ma | About | Contact | Terms</p>
+    </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="card">
+            <button class="close-btn" id="closeModalBtn">&times;</button>
+            <h1>Join Markaba.Ma</h1>
+            <p class="muted">Sign up quickly with your Google account.</p>
+            <button id="signUpBtn" class="btn google">Sign Up with Google</button>
+        </div>
+    </div>
+
+    <div class="modal" id="inventoryModal">
+        <div class="modal-content">
+            <button class="close-btn-inventory" id="closeInventoryModal">&times;</button>
+            <div class="search-filter">
+                <input type="text" id="searchInput" placeholder="Search make or model...">
+            </div>
+            <div class="inventory" id="inventoryList">
+            </div>
+        </div>
+    </div>
+
+    <div id="simulatorModal" class="simulator-modal">
+        <div class="simulator-modal-content">
+            <span class="simulator-close-btn" id="closeSimulator">&times;</span>
+            <h2 style="text-align:center;">Vehicle Loan Simulator</h2>
+            <div class="payment-box">
+                <p id="monthlyPayment">Monthly Payment: $0.00</p>
+            </div>
+            <div class="loan-form">
+                <div>
+                    <label for="amount">Vehicle Price ($)</label>
+                    <input type="number" id="amount" value="0" min="0">
+                </div>
+                <div>
+                    <label for="rate">Annual Interest Rate (%)</label>
+                    <input type="number" id="rate" value="5" min="0" step="0.1">
+                </div>
+                <div>
+                    <label for="years">Loan Duration (Years)</label>
+                    <input type="number" id="years" value="5" min="1" max="10">
+                </div>
+                <div>
+                    <label for="insurance">Monthly Insurance ($)</label>
+                    <input type="number" id="insurance" value="50" min="0">
+                </div>
+                <div>
+                    <label for="tax">Taxes ($)</label>
+                    <input type="number" id="tax" value="1000" min="0">
+                </div>
+            </div>
+            <button onclick="calculate()"
+                style="width: 100%; padding: 10px; background: #2563eb; color: white; border: none;
+            border-radius: 8px; margin-top: 20px; cursor: pointer;">
+                Calculate
+            </button>
+            <div class="scrollable-content">
+                <div class="summary-card" id="summary">
+                    <p>Vehicle Price (with taxes): $0.00</p>
+                    <p>Loan Duration: 0 months</p>
+                </div>
+                <div class="totals-card" id="total">
+                </div>
+                <div id="schedule-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Insurance</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">
+        <span id="toastMsg"></span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Firebase configuration: replace these placeholders with your actual project details
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYAoJVCHxdkyWl5TF9RQautlCR-aSbD2k",
+            authDomain: "farikicars.firebaseapp.com",
+            projectId: "farikicars",
+            storageBucket: "farikicars.firebasestorage.app",
+            messagingSenderId: "178935050975",
+            appId: "1:178935050975:web:eac640391a77adb1b02f6a",
+            measurementId: "G-9LVM9ZQ5N5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        const toast = document.getElementById("toast");
+
+        const showToast = (msg) => {
+            toast.style.display = "block";
+            toast.textContent = msg;
+            setTimeout(() => toast.style.display = "none", 4000);
+        };
+
+        const userNameDisplay = document.getElementById("userName");
+        const modalOverlay = document.getElementById("modalOverlay");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        // Auth Modal buttons
+        openModalBtn.addEventListener("click", () => modalOverlay.style.display = "flex");
+        document.getElementById("closeModalBtn").addEventListener("click", () => modalOverlay.style.display = "none");
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) modalOverlay.style.display = "none";
+        });
+
+        // Google Sign-In
+        document.getElementById("signUpBtn").addEventListener("click", async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const displayName = result.user.displayName;
+                userNameDisplay.textContent = `Hello, ${displayName}`;
+                showToast(`Welcome ${displayName}!`);
+                modalOverlay.style.display = "none";
+            } catch (err) {
+                showToast("Error: " + err.message);
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                showToast("You have signed out.");
+            } catch (err) {
+                showToast("Error: " + err.message);
+            }
+        });
+
+        // Stay signed in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userNameDisplay.textContent = `Hello, ${user.displayName}`;
+                openModalBtn.style.display = "none";
+                logoutBtn.style.display = "inline-block";
+            } else {
+                userNameDisplay.textContent = "";
+                openModalBtn.style.display = "inline-block";
+                logoutBtn.style.display = "none";
+            }
+        });
+
+        // Inventory data
+        const inventoryData = {
+            Car: [
+                { title: 'Toyota Corolla', price: '$20,000', img: 'images/toyota.jpg', make: 'Toyota', model: 'Corolla' },
+                { title: 'BMW X5', price: '$60,000', img: 'images/bmw.jpg', make: 'BMW', model: 'X5' },
+                { title: 'Tesla Model 3', price: '$45,000', img: 'images/tesla.jpg', make: 'Tesla', model: 'Model 3' }
+            ],
+            Bike: [
+                { title: 'Yamaha R1', price: '$15,000', img: 'images/yamaha.jpg', make: 'Yamaha', model: 'R1' },
+                { title: 'Ducati Monster', price: '$18,000', img: 'images/ducati.jpg', make: 'Ducati', model: 'Monster' },
+                { title: 'Kawasaki Ninja', price: '$12,000', img: 'images/kawasaki.jpg', make: 'Kawasaki', model: 'Ninja' }
+            ],
+            Ship: [
+                { title: 'Yacht 50ft', price: '$200,000', img: 'images/yacht.jpg', make: 'Yacht', model: '50ft' },
+                { title: 'Fishing Boat', price: '$35,000', img: 'images/fishing.jpg', make: 'Fishing', model: 'Boat' },
+                { title: 'Speed Boat', price: '$80,000', img: 'images/speed.jpg', make: 'Speed', model: 'Boat' }
+            ],
+            Truck: [
+                { title: 'Ford F150', price: '$40,000', img: 'images/ford.jpg', make: 'Ford', model: 'F150' },
+                { title: 'Mercedes Actros', price: '$70,000', img: 'images/mercedes.jpg',, make: 'Mercedes', model: 'Actros' },
+                { title: 'Volvo FH', price: '$65,000', img: 'images/volvo.jpg',, make: 'Volvo', model: 'FH' }
+            ],
+            Aircraft: [
+                { title: 'Cessna 172', price: '$250,000', img: 'images/cessna.jpg',, make: 'Cessna', model: '172' },
+                { title: 'Piper PA-28', price: '$220,000', img: 'images/piper.jpg',, make: 'Piper', model: 'PA-28' },
+                { title: 'Cirrus SR22', price: '$300,000', img: 'images/cirrus.jpg',, make: 'Cirrus', model: 'SR22' }
+            ],
+            Accessories: [
+                { title: 'Helmet', price: '$120', img: 'image/helmet.jpg',, make: 'Helmet', model: '' },
+                { title: 'Bike Gloves', price: '$50', img: 'images/gloves.jpg',, make: 'Bike', model: 'Gloves' },
+                { title: 'Car Mat', price: '$80', img: 'images/mat.jpg',, make: 'Car', model: 'Mat' }
+            ]
+        };
+
+        // Inventory Modal JS
+        const inventoryModal = document.getElementById('inventoryModal');
+        const closeInventoryModalBtn = document.getElementById('closeInventoryModal');
+        const inventoryList = document.getElementById('inventoryList');
+        const searchInput = document.getElementById('searchInput');
+        const heroButtons = document.getElementById('heroButtons');
+        const popupsContainer = document.createElement('div');
+        document.body.appendChild(popupsContainer);
+
+        function renderListings(category) {
+            inventoryList.innerHTML = '';
+            const items = inventoryData[category];
+            if (items) {
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'car-card-inv';
+                    card.innerHTML = `
+                        <img src="${item.img}" alt="${item.title}">
+                        <div class="car-info-inv">
+                            <h3>${item.title}</h3>
+                            <p class="price">${item.price}</p>
+                            <div class="btn-group">
+                                <a class="whatsapp-btn" href="https://wa.me/212720112372?text=I%20am%20interested%20in%20the%20${encodeURIComponent(item.title)}">Check</a>
+                                <button class="loan-btn" data-price="${item.price.replace('$', '').replace(',', '')}">Loan Simulator</button>
+                            </div>
+                        </div>
+                    `;
+                    inventoryList.appendChild(card);
+                });
+            }
+        }
+
+        function filterListings() {
+            const searchText = searchInput.value.toLowerCase();
+            const cards = inventoryList.querySelectorAll('.car-card-inv');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchText)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function updatePopups() {
+            popupsContainer.innerHTML = '';
+            for (const category in inventoryData) {
+                inventoryData[category].forEach(item => {
+                    const popupId = `popup-${item.title.replace(/\s/g, '').replace(/[\/\\'\\.\\-]/g, '')}`;
+                    const popupHTML = `
+                        <div class="popup" id="${popupId}">
+                            <div class="popup-content">
+                                <span class="close-btn-popup" onclick="closePopup('${popupId}')">&times;</span>
+                                <h2>${item.title}</h2>
+                                <p><strong>Price:</strong> ${item.price}</p>
+                            </div>
+                        </div>
+                    `;
+                    popupsContainer.innerHTML += popupHTML;
+                });
+            }
+            attachPopupListeners();
+        }
+
+        function attachPopupListeners() {
+            const cards = document.querySelectorAll('.car-card-inv');
+            cards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const title = card.querySelector('h3').textContent;
+                    const popupId = `popup-${title.replace(/\s/g, '').replace(/[\/\\'\\.\\-]/g, '')}`;
+                    openPopup(popupId);
+                });
+            });
+        }
+
+        // Listeners for hero section category buttons
+        heroButtons.addEventListener('click', (e) => {
+            if (e.target.closest('.circle-btn')) {
+                const category = e.target.closest('.circle-btn').dataset.category;
+                inventoryModal.classList.add('open');
+                renderListings(category);
+                updatePopups();
+            }
+        });
+
+        closeInventoryModalBtn.addEventListener('click', () => {
+            inventoryModal.classList.remove('open');
+            searchInput.value = '';
+        });
+
+        window.addEventListener('click', e => {
+            if (e.target === inventoryModal) {
+                inventoryModal.classList.remove('open');
+                searchInput.value = '';
+            }
+        });
+
+        searchInput.addEventListener('input', filterListings);
+
+        // Display featured cars on page load
+        function displayFeaturedCars() {
+            const featuredContainer = document.querySelector('.featured-cars');
+            featuredContainer.innerHTML = '';
+            const categories = Object.keys(inventoryData);
+            const featuredItems = [];
+            categories.forEach(cat => {
+                featuredItems.push(...inventoryData[cat]);
+            });
+
+            // Shuffle items to get a random selection
+            featuredItems.sort(() => 0.5 - Math.random());
+
+            const selectedItems = featuredItems.slice(0, 3);
+            selectedItems.forEach(item => {
+                const cardHTML = `
+                    <div class="car-card" data-title="${item.title}">
+                        <img src="${item.img}" alt="${item.title}">
+                        <div class="car-card-content">
+                            <h3>${item.title}</h3>
+                            <p>${item.price}</p>
+                            <div class="btn-group">
+                                <a class="whatsapp-btn" href="https://wa.me/212720112372?text=I%20am%20interested%20in%20the%20${encodeURIComponent(item.title)}" target="_blank">Check</a>
+                                <button class="loan-btn" data-price="${item.price.replace('$', '').replace(',', '')}">Loan Simulator</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                featuredContainer.innerHTML += cardHTML;
+            });
+
+            // Re-attach event listeners to the new buttons
+            attachFeaturedCarListeners();
+        }
+
+        function attachFeaturedCarListeners() {
+            const featuredLoanButtons = document.querySelectorAll('.featured-cars .loan-btn');
+            featuredLoanButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const price = e.target.dataset.price;
+                    amountInput.value = price;
+                    simulatorModal.style.display = 'flex';
+                    calculate();
+                });
+            });
+        }
+
+        window.onload = () => {
+            displayFeaturedCars();
+            updatePopups();
+        };
+
+        // Newsletter form submission handling
+        const newsletterForm = document.getElementById("newsletter-form");
+        newsletterForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    showToast("Thanks for subscribing!");
+                    form.reset();
+                } else {
+                    showToast("Subscription failed. Please try again.");
+                }
+            } catch (error) {
+                showToast("An error occurred. Please check your connection.");
+                console.error("Form submission error:", error);
+            }
+        });
+
+        // Loan Simulator Logic
+        const simulatorModal = document.getElementById('simulatorModal');
+        const closeSimulatorBtn = document.getElementById('closeSimulator');
+        const amountInput = document.getElementById("amount");
+        const rateInput = document.getElementById("rate");
+        const yearsInput = document.getElementById("years");
+        const insuranceInput = document.getElementById("insurance");
+        const taxInput = document.getElementById("tax");
+        const summaryDiv = document.getElementById("summary");
+        const totalDiv = document.getElementById("total");
+        const monthlyPaymentDiv = document.getElementById("monthlyPayment");
+        const tableBody = document.getElementById("tableBody");
+
+        // Event listeners for loan buttons on car cards
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('loan-btn')) {
+                e.stopPropagation();
+                const price = e.target.dataset.price;
+                amountInput.value = price;
+                simulatorModal.style.display = 'flex';
+                calculate();
+            }
+        });
+
+        // Close simulator modal
+        closeSimulatorBtn.addEventListener('click', () => {
+            simulatorModal.style.display = 'none';
+        });
+
+        // Close if clicking outside simulator content
+        simulatorModal.addEventListener('click', (e) => {
+            if (e.target === simulatorModal) {
+                simulatorModal.style.display = 'none';
+            }
+        });
+
+        // Calculator function
+        window.calculate = function () {
+            const vehiclePrice = parseFloat(amountInput.value) || 0;
+            const annualRate = parseFloat(rateInput.value) / 100 || 0.05;
+            const years = parseInt(yearsInput.value) || 5;
+            const insurance = parseFloat(insuranceInput.value) || 0;
+            const tax = parseFloat(taxInput.value) || 0;
+
+            if (vehiclePrice <= 0 || years <= 0) {
+                showToast("Please enter valid positive values for vehicle price and loan duration.");
+                return;
+            }
+
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+
+            let monthlyPayment;
+            if (monthlyRate === 0) {
+                monthlyPayment = vehiclePrice / months;
+            } else {
+                monthlyPayment = (vehiclePrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+            }
+
+            const totalMonthly = monthlyPayment + insurance;
+            const totalVehiclePrice = vehiclePrice + tax;
+
+            monthlyPaymentDiv.innerHTML = `Monthly Payment: $${totalMonthly.toFixed(2)}`;
+            summaryDiv.innerHTML = `Vehicle Price (with taxes):<br>$${totalVehiclePrice.toFixed(2)}<br>Loan Duration: ${months} months`;
+
+            let totalPrincipal = 0,
+                totalInterest = 0,
+                totalInsurance = insurance * months;
+
+            tableBody.innerHTML = "";
+            let balance = vehiclePrice;
+
+            for (let i = 1; i <= months; i++) {
+                const interest = balance * monthlyRate;
+                const principal = monthlyPayment - interest;
+                balance -= principal;
+
+                if (balance < 0) balance = 0;
+
+                totalPrincipal += principal;
+                totalInterest += interest;
+
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${i}</td>
+                        <td>$${principal.toFixed(2)}</td>
+                        <td>$${interest.toFixed(2)}</td>
+                        <td>$${insurance.toFixed(2)}</td>
+                        <td>$${balance.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+
+            const grandTotal = totalPrincipal + totalInterest + totalInsurance + tax;
+            totalDiv.innerHTML = `Principal Paid: $${totalPrincipal.toFixed(2)}<br>
+                Interest Paid: $${totalInterest.toFixed(2)}<br>
+                Insurance Paid: $${totalInsurance.toFixed(2)}<br>
+                Taxes: $${tax.toFixed(2)}<br>
+                <strong>Grand Total: $${grandTotal.toFixed(2)}</strong>`;
+        };
+
+        // New popup functions
+        window.openPopup = function (id) {
+            document.getElementById(id).style.display = "flex";
+        }
+
+        window.closePopup = function (id) {
+            document.getElementById(id).style.display = "none";
+        }
+    </script>
+</body>
+</html>
