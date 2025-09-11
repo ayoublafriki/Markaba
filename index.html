@@ -45,23 +45,71 @@
         }
 
         header {
-            background: #111;
-            color: white;
-            padding: 1em 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
+  background: #fff;
+  color: #111;
+  padding: 0.8em 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
 
-        header h2 {
-            font-weight: 700;
-            font-size: 1.5em;
-        }
+header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.4em;
+  color: var(--primary);
+}
+
+header .logo img {
+  height: 32px;
+  margin-right: 8px;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.auth-buttons button {
+  padding: 8px 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 1em;
+  transition: background 0.3s;
+}
+
+#openModalBtn {
+  background: var(--primary);
+  color: #fff;
+}
+
+#openModalBtn:hover {
+  background: #1e50c7;
+}
+
+#logoutBtn {
+  background: #e53e3e;
+  color: #fff;
+  display: none;
+}
+
+#logoutBtn:hover {
+  background: #c53030;
+}
+
+#userName {
+  font-weight: 600;
+  margin-left: 1em;
+}
 
         nav a {
             margin-left: 1.5em;
@@ -669,12 +717,14 @@
 </head>
 <body>
     <header>
-        <h2>Markaba.Ma</h2>
-        <div>
-            <button id="openModalBtn" style="padding:8px 16px; font-weight:bold; cursor:pointer;">Sign Up</button>
-            <span id="userName"></span>
-            <button id="logoutBtn">Logout</button>
-        </div>
+  <div class="logo">
+    <img src="markaba-icon.png" alt="Markaba Logo">
+  </div>
+  <div class="auth-buttons">
+    <button id="openModalBtn">Sign Up</button>
+    <span id="userName"></span>
+    <button id="logoutBtn">Logout</button>
+  </div>
     </header>
 
     <section class="hero">
