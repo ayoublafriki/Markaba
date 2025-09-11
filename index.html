@@ -193,7 +193,53 @@ header .logo img {
             color: white;
             font-size: 0.9em;
         }
+        /* Language dropdown */
+.language-dropdown {
+  position: relative;
+  display: inline-block;
+}
 
+.language-dropdown button {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.language-dropdown button:hover {
+  background: #f5f5f5;
+}
+
+.language-dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 100px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.language-dropdown .dropdown-content a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.language-dropdown .dropdown-content a:hover {
+  background: #f0f0f0;
+}
+
+/* Show dropdown when active */
+.language-dropdown.show .dropdown-content {
+  display: block;
+}
         section {
             padding: 3em 5%;
             text-align: center;
@@ -724,6 +770,15 @@ header .logo img {
     <button id="openModalBtn">Sign Up</button>
     <span id="userName"></span>
     <button id="logoutBtn">Logout</button>
+  </div>
+        <!-- Language Switcher -->
+  <div class="language-dropdown">
+    <button id="langBtn">🇬🇧 EN ▾</button>
+    <div class="dropdown-content">
+      <a href="ar/index.html">🇲🇦 AR</a>
+      <a href="fr/index.html">🇫🇷 FR</a>
+      <a href="index.html">🇬🇧 EN</a>
+    </div>
   </div>
     </header>
 
@@ -1267,6 +1322,31 @@ header .logo img {
         window.closePopup = function (id) {
             document.getElementById(id).style.display = "none";
         }
+        document.addEventListener("DOMContentLoaded", function () {
+  const langBtn = document.getElementById("langBtn");
+  const langDropdown = document.querySelector(".language-dropdown");
+
+  // Detect current language
+  const currentPath = window.location.pathname;
+  if (currentPath.includes("/ar/")) {
+    langBtn.textContent = "🇲🇦 AR ▾";
+  } else if (currentPath.includes("/fr/")) {
+    langBtn.textContent = "🇫🇷 FR ▾";
+  } else {
+    langBtn.textContent = "🇬🇧 EN ▾";
+  }
+
+  // Toggle dropdown on click
+  langBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    langDropdown.classList.toggle("show");
+  });
+
+  // Close dropdown if clicking outside
+  document.addEventListener("click", function () {
+    langDropdown.classList.remove("show");
+  });
+});
     </script>
 </body>
 </html>
