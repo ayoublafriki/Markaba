@@ -284,3 +284,74 @@ const inventoryData = {
         { title: 'حصيرة سيارة', price: '800 درهم', img: 'images/mat.jpg', make: 'Car', model: 'Mat' }
     ]
 };
+    // جافاسكربت نافذة المخزون
+const inventoryModal = document.getElementById('inventoryModal');
+const closeInventoryModalBtn = document.getElementById('closeInventoryModal');
+const inventoryList = document.getElementById('inventoryList');
+const searchInput = document.getElementById('searchInput');
+const heroButtons = document.getElementById('heroButtons');
+const popupsContainer = document.createElement('div');
+document.body.appendChild(popupsContainer);
+
+function renderListings(category) {
+    inventoryList.innerHTML = '';
+    const items = inventoryData[category];
+    if (items) {
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'car-card-inv';
+            card.innerHTML = `
+                <img src="${item.img}" alt="${item.title}">
+                <div class="car-info-inv">
+                    <h3>${item.title}</h3>
+                    <p class="price">${item.price}</p>
+                    <div class="btn-group">
+                        <a class="whatsapp-btn" href="https://wa.me/212720112372?text=أنا%20مهتم%20ب${encodeURIComponent(item.title)}">عرض</a>
+                        <button class="loan-btn" data-price="${item.price.replace('$', '').replace(',', '')}">محاكي القرض</button>
+                    </div>
+                </div>
+            `;
+            inventoryList.appendChild(card);
+        });
+    }
+}
+
+function filterListings() {
+    const searchText = searchInput.value.toLowerCase();
+    const cards = inventoryList.querySelectorAll('.car-card-inv');
+    cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        card.style.display = title.includes(searchText) ? 'flex' : 'none';
+    });
+}
+
+function updatePopups() {
+    popupsContainer.innerHTML = '';
+    for (const category in inventoryData) {
+        inventoryData[category].forEach(item => {
+            const popupId = `popup-${item.title.replace(/\s/g, '').replace(/[\/\\'\\.\\-]/g, '')}`;
+            const popupHTML = `
+                <div class="popup" id="${popupId}">
+                    <div class="popup-content">
+                        <span class="close-btn-popup" onclick="closePopup('${popupId}')">&times;</span>
+                        <h2>${item.title}</h2>
+                        <p><strong>السعر:</strong> ${item.price}</p>
+                    </div>
+                </div>
+            `;
+            popupsContainer.innerHTML += popupHTML;
+        });
+    }
+    attachPopupListeners();
+}
+
+function attachPopupListeners() {
+    const cards = document.querySelectorAll('.car-card-inv');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            const title = card.querySelector('h3').textContent;
+            const popupId = `popup-${title.replace(/\s/g, '').replace(/[\/\\'\\.\\-]/g, '')}`;
+            openPopup(popupId);
+        });
+    });
+}
