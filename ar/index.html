@@ -493,3 +493,105 @@ simulatorModal.addEventListener('click', (e) => {
         simulatorModal.style.display = 'none';
     }
 });
+// Calculator function
+window.calculate = function () {
+    const vehiclePrice = parseFloat(amountInput.value) || 0;
+    const annualRate = parseFloat(rateInput.value) / 100 || 0.05;
+    const years = parseInt(yearsInput.value) || 5;
+    const insurance = parseFloat(insuranceInput.value) || 0;
+    const tax = parseFloat(taxInput.value) || 0;
+
+    if (vehiclePrice <= 0 || years <= 0) {
+        showToast("Veuillez saisir des valeurs positives valides pour le prix du véhicule et la durée du prêt.");
+        return;
+    }
+
+    const monthlyRate = annualRate / 12;
+    const months = years * 12;
+
+    let monthlyPayment;
+    if (monthlyRate === 0) {
+        monthlyPayment = vehiclePrice / months;
+    } else {
+        monthlyPayment = (vehiclePrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+    }
+
+    const totalMonthly = monthlyPayment + insurance;
+    const totalVehiclePrice = vehiclePrice + tax;
+
+    monthlyPaymentDiv.innerHTML = `Paiement mensuel : dh${totalMonthly.toFixed(2)}`;
+    summaryDiv.innerHTML = `Prix du véhicule (avec taxes) :<br>dh${totalVehiclePrice.toFixed(2)}<br>Durée du prêt : ${months} mois`;
+
+    let totalPrincipal = 0,
+        totalInterest = 0,
+        totalInsurance = insurance * months;
+
+    tableBody.innerHTML = "";
+    let balance = vehiclePrice;
+
+    for (let i = 1; i <= months; i++) {
+        const interest = balance * monthlyRate;
+        const principal = monthlyPayment - interest;
+        balance -= principal;
+
+        if (balance < 0) balance = 0;
+
+        totalPrincipal += principal;
+        totalInterest += interest;
+
+        tableBody.innerHTML += `
+            <tr>
+                <td>${i}</td>
+                <td>dh${principal.toFixed(2)}</td>
+                <td>dh${interest.toFixed(2)}</td>
+                <td>dh${insurance.toFixed(2)}</td>
+                <td>dh${balance.toFixed(2)}</td>
+            </tr>
+        `;
+    }
+
+    const grandTotal = totalPrincipal + totalInterest + totalInsurance + tax;
+    totalDiv.innerHTML = `Principal payé : dh${totalPrincipal.toFixed(2)}<br>
+        Intérêts payés : dh${totalInterest.toFixed(2)}<br>
+        Assurance payée : dh${totalInsurance.toFixed(2)}<br>
+        Taxes : dh${tax.toFixed(2)}<br>
+        <strong>Total général : dh${grandTotal.toFixed(2)}</strong>`;
+};
+
+// New popup functions
+window.openPopup = function (id) {
+    document.getElementById(id).style.display = "flex";
+}
+
+window.closePopup = function (id) {
+    document.getElementById(id).style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const langBtn = document.getElementById("langBtn");
+    const langDropdown = document.querySelector(".language-dropdown");
+
+    // Detect current language
+    const currentPath = window.location.pathname;
+    if (currentPath.includes("/ar/")) {
+        langBtn.textContent = "🇲🇦 AR ▾";
+    } else if (currentPath.includes("/fr/")) {
+        langBtn.textContent = "🇫🇷 FR ▾";
+    } else {
+        langBtn.textContent = "🇬🇧 EN ▾";
+    }
+
+    // Toggle dropdown on click
+    langBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        langDropdown.classList.toggle("show");
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener("click", function () {
+        langDropdown.classList.remove("show");
+    });
+});
+</script>
+</body>
+</html>
