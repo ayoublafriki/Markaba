@@ -179,3 +179,75 @@
 <div id="toast">  
     <span id="toastMsg"></span>  
     </div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBYAoJVCHxdkyWl5TF9RQautlCR-aSbD2k",
+        authDomain: "farikicars.firebaseapp.com",
+        projectId: "farikicars",
+        storageBucket: "farikicars.firebasestorage.app",
+        messagingSenderId: "178935050975",
+        appId: "1:178935050975:web:eac640391a77adb1b02f6a",
+        measurementId: "G-9LVM9ZQ5N5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+    const toast = document.getElementById("toast");
+
+    const showToast = (msg) => {
+        toast.style.display = "block";
+        toast.textContent = msg;
+        setTimeout(() => toast.style.display = "none", 4000);
+    };
+
+    const userNameDisplay = document.getElementById("userName");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    // أزرار واجهة الدخول
+    openModalBtn.addEventListener("click", () => modalOverlay.style.display = "flex");
+    document.getElementById("closeModalBtn").addEventListener("click", () => modalOverlay.style.display = "none");
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) modalOverlay.style.display = "none";
+    });
+
+    // تسجيل الدخول عبر جوجل
+    document.getElementById("signUpBtn").addEventListener("click", async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const displayName = result.user.displayName;
+            userNameDisplay.textContent = `مرحباً، ${displayName}`;
+            showToast(`أهلاً بك ${displayName}!`);
+            modalOverlay.style.display = "none";
+        } catch (err) {
+            showToast("خطأ: " + err.message);
+        }
+    });
+
+    // تسجيل الخروج
+    logoutBtn.addEventListener("click", async () => {
+        try {
+            await signOut(auth);
+            showToast("لقد قمت بتسجيل الخروج.");
+        } catch (err) {
+            showToast("خطأ: " + err.message);
+        }
+    });
+
+    // البقاء مسجلاً
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            userNameDisplay.textContent = `مرحباً، ${user.displayName}`;
+            openModalBtn.style.display = "none";
+            logoutBtn.style.display = "inline-block";
+        } else {
+            userNameDisplay.textContent = "";
+            openModalBtn.style.display = "inline-block";
+            logoutBtn.style.display = "none";
+        }
+    });
