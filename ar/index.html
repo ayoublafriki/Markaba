@@ -40,4 +40,81 @@
             </div>
         </div>
     </header>
-</body>
+    
+<section class="hero">
+    <h1>قد سيارة أحلامك</h1>
+    <p>اكتشفها على مركبة</p>
+    <div class="cta-buttons" id="heroButtons">
+        <button class="circle-btn" data-category="Car">
+            <div class="emoji">🚗</div>
+            <span>سيارات</span>
+        </button>
+        <button class="circle-btn" data-category="Bike">
+            <div class="emoji">🏍️</div>
+            <span>دراجات</span>
+        </button>
+        <button class="circle-btn" data-category="Truck">
+            <div class="emoji">🚚</div>
+            <span>شاحنات</span>
+        </button>
+        <button class="circle-btn" data-category="Ship">
+            <div class="emoji">🚢</div>
+            <span>سفن</span>
+        </button>
+        <button class="circle-btn" data-category="Aircraft">
+            <div class="emoji">✈️</div>
+            <span>طائرات</span>
+        </button>
+        <button class="circle-btn" data-category="Accessories">
+            <div class="emoji">🔩</div>
+            <span>إكسسوارات</span>
+        </button>
+    </div>
+</section>
+
+<section class="featured">
+    <h2>عروض مميزة</h2>
+    <div class="featured-cars"></div>
+</section>
+
+<section class="why">
+    <h2>لماذا تختارنا</h2>
+    <p>وكلاء موثوقون • تمويل سهل • توصيل في جميع أنحاء البلاد</p>
+</section>
+
+<section class="testimonials">
+    <h2>آراء عملائنا</h2>
+    <p>“مركبة جعلت شراء سيارتي سهلاً للغاية”
+        ★★★★★</p>
+</section>
+
+<section class="newsletter">
+    <h2>ابقَ على اطلاع</h2>
+    <form id="newsletter-form" action="https://formspree.io/f/xgvzbjpw" method="POST">
+        <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
+        <button type="submit">اشترك</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2025 Markaba.Ma | من نحن | اتصل بنا | الشروط</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="card">
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+        <h1>Markaba.Ma انضم إلى </h1>
+        <p class="muted">سجل بسرعة باستخدام حساب غوغل الخاص بك.</p>
+        <button id="signUpBtn" class="btn google">Google سجل باستخدام </button>
+    </div>
+</div>
+
+<div class="modal" id="inventoryModal">
+    <div class="modal-content">
+        <button class="close-btn-inventory" id="closeInventoryModal">&times;</button>
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="ابحث عن الماركة أو الطراز...">
+        </div>
+        <div class="inventory" id="inventoryList"></div>
+    </div>
+</div>
