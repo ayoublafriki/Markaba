@@ -430,3 +430,65 @@ window.onload = () => {
     displayFeaturedCars();
     updatePopups();
 };
+// Newsletter form submission handling
+const newsletterForm = document.getElementById("newsletter-form");
+newsletterForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        if (response.ok) {
+            showToast("Merci pour votre inscription !");
+            form.reset();
+        } else {
+            showToast("Échec de l'inscription. Veuillez réessayer.");
+        }
+    } catch (error) {
+        showToast("Une erreur est survenue. Veuillez vérifier votre connexion.");
+        console.error("Form submission error:", error);
+    }
+});
+
+// Loan Simulator Logic
+const simulatorModal = document.getElementById('simulatorModal');
+const closeSimulatorBtn = document.getElementById('closeSimulator');
+const amountInput = document.getElementById("amount");
+const rateInput = document.getElementById("rate");
+const yearsInput = document.getElementById("years");
+const insuranceInput = document.getElementById("insurance");
+const taxInput = document.getElementById("tax");
+const summaryDiv = document.getElementById("summary");
+const totalDiv = document.getElementById("total");
+const monthlyPaymentDiv = document.getElementById("monthlyPayment");
+const tableBody = document.getElementById("tableBody");
+
+// Event listeners for loan buttons on car cards
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('loan-btn')) {
+        e.stopPropagation();
+        const price = e.target.dataset.price;
+        amountInput.value = price;
+        simulatorModal.style.display = 'flex';
+        calculate();
+    }
+});
+
+// Close simulator modal
+closeSimulatorBtn.addEventListener('click', () => {
+    simulatorModal.style.display = 'none';
+});
+
+// Close if clicking outside simulator content
+simulatorModal.addEventListener('click', (e) => {
+    if (e.target === simulatorModal) {
+        simulatorModal.style.display = 'none';
+    }
+});
