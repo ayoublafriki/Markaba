@@ -355,3 +355,36 @@ function attachPopupListeners() {
         });
     });
 }
+// Listeners for hero section category buttons
+        heroButtons.addEventListener('click', (e) => {
+            if (e.target.closest('.circle-btn')) {
+                const category = e.target.closest('.circle-btn').dataset.category;
+                inventoryModal.classList.add('open');
+                renderListings(category);
+                updatePopups();
+            }
+        });
+
+        closeInventoryModalBtn.addEventListener('click', () => {
+            inventoryModal.classList.remove('open');
+            searchInput.value = '';
+        });
+
+        window.addEventListener('click', e => {
+            if (e.target === inventoryModal) {
+                inventoryModal.classList.remove('open');
+                searchInput.value = '';
+            }
+        });
+
+        searchInput.addEventListener('input', filterListings);
+
+        // Display featured cars on page load
+        function displayFeaturedCars() {
+            const featuredContainer = document.querySelector('.featured-cars');
+            featuredContainer.innerHTML = '';
+            const categories = Object.keys(inventoryData);
+            const featuredItems = [];
+            categories.forEach(cat => {
+                featuredItems.push(...inventoryData[cat]);
+            });
