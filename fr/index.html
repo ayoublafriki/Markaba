@@ -20,6 +20,84 @@
     <!-- Shared CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
+   <section class="hero">
+    <h1>Conduisez votre rêve</h1>
+    <p>Découvrez-le sur Markaba.Ma</p>
+    <div class="cta-buttons" id="heroButtons">
+        <button class="circle-btn" data-category="Car">
+            <div class="emoji">🚗</div>
+            <span>Voitures</span>
+        </button>
+        <button class="circle-btn" data-category="Bike">
+            <div class="emoji">🏍️</div>
+            <span>Motos</span>
+        </button>
+        <button class="circle-btn" data-category="Truck">
+            <div class="emoji">🚚</div>
+            <span>Camions</span>
+        </button>
+        <button class="circle-btn" data-category="Ship">
+            <div class="emoji">🚢</div>
+            <span>Bateaux</span>
+        </button>
+        <button class="circle-btn" data-category="Aircraft">
+            <div class="emoji">✈️</div>
+            <span>Avions</span>
+        </button>
+        <button class="circle-btn" data-category="Accessories">
+            <div class="emoji">🔩</div>
+            <span>Accessoires</span>
+        </button>
+    </div>
+</section>
+
+<section class="featured">
+    <h2>Annonces en vedette</h2>
+    <div class="featured-cars"></div>
+</section>
+
+<section class="why">
+    <h2>Pourquoi nous choisir</h2>
+    <p>Concessionnaires de confiance • Financement facile • Livraison nationale</p>
+</section>
+
+<section class="testimonials">
+    <h2>Ce que disent nos clients</h2>
+    <p>« Markaba a rendu l'achat de mon véhicule si facile ! »
+        ★★★★★</p>
+</section>
+
+<section class="newsletter">
+    <h2>Restez informé</h2>
+    <form id="newsletter-form" action="https://formspree.io/f/xgvzbjpw" method="POST">
+        <input type="email" name="email" placeholder="Entrez votre email" required>
+        <button type="submit">S'abonner</button>
+    </form>
+</section>
+
+<footer>
+    <p>© 2025 Markaba.Ma | À propos | Contact | Conditions</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="card">
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+        <h1>Rejoignez Markaba.Ma</h1>
+        <p class="muted">Inscrivez-vous rapidement avec votre compte Google.</p>
+        <button id="signUpBtn" class="btn google">S'inscrire avec Google</button>
+    </div>
+</div>
+
+<div class="modal" id="inventoryModal">
+    <div class="modal-content">
+        <button class="close-btn-inventory" id="closeInventoryModal">&times;</button>
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Rechercher une marque ou un modèle...">
+        </div>
+        <div class="inventory" id="inventoryList"></div>
+    </div>
+</div> 
   
 <body>
     <header>
