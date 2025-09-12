@@ -387,3 +387,46 @@ function attachPopupListeners() {
             categories.forEach(cat => {
                 featuredItems.push(...inventoryData[cat]);
             });
+
+    // Shuffle items to get a random selection
+featuredItems.sort(() => 0.5 - Math.random());
+
+const selectedItems = featuredItems.slice(0, 3);
+selectedItems.forEach(item => {
+    const cardHTML = `
+        <div class="car-card" data-title="${item.title}">
+            <img src="${item.img}" alt="${item.title}">
+            <div class="car-card-content">
+                <h3>${item.title}</h3>
+                <p>${item.price}</p>
+                <div class="btn-group">
+                    <a class="whatsapp-btn" href="https://wa.me/212720112372?text=Je%20suis%20intéressé%20par%20le%20${encodeURIComponent(item.title)}" target="_blank">Voir</a>
+                    <button class="loan-btn" data-price="${item.price.replace('$', '').replace(',', '')}">Simulateur de prêt</button>
+                </div>
+            </div>
+        </div>
+    `;
+    featuredContainer.innerHTML += cardHTML;
+});
+
+// Re-attach event listeners to the new buttons
+attachFeaturedCarListeners();
+}
+
+function attachFeaturedCarListeners() {
+    const featuredLoanButtons = document.querySelectorAll('.featured-cars .loan-btn');
+    featuredLoanButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const price = e.target.dataset.price;
+            amountInput.value = price;
+            simulatorModal.style.display = 'flex';
+            calculate();
+        });
+    });
+}
+
+window.onload = () => {
+    displayFeaturedCars();
+    updatePopups();
+};
