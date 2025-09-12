@@ -493,7 +493,7 @@ simulatorModal.addEventListener('click', (e) => {
         simulatorModal.style.display = 'none';
     }
 });
-// Calculator function
+    // Calculator function
 window.calculate = function () {
     const vehiclePrice = parseFloat(amountInput.value) || 0;
     const annualRate = parseFloat(rateInput.value) / 100 || 0.05;
@@ -502,7 +502,7 @@ window.calculate = function () {
     const tax = parseFloat(taxInput.value) || 0;
 
     if (vehiclePrice <= 0 || years <= 0) {
-        showToast("Veuillez saisir des valeurs positives valides pour le prix du véhicule et la durée du prêt.");
+        showToast("يرجى إدخال قيم صحيحة وإيجابية لسعر السيارة ومدة القرض.");
         return;
     }
 
@@ -519,8 +519,8 @@ window.calculate = function () {
     const totalMonthly = monthlyPayment + insurance;
     const totalVehiclePrice = vehiclePrice + tax;
 
-    monthlyPaymentDiv.innerHTML = `Paiement mensuel : dh${totalMonthly.toFixed(2)}`;
-    summaryDiv.innerHTML = `Prix du véhicule (avec taxes) :<br>dh${totalVehiclePrice.toFixed(2)}<br>Durée du prêt : ${months} mois`;
+    monthlyPaymentDiv.innerHTML = `القسط الشهري: درهم${totalMonthly.toFixed(2)}`;
+    summaryDiv.innerHTML = `سعر السيارة (مع الضرائب):<br>درهم${totalVehiclePrice.toFixed(2)}<br>مدة القرض: ${months} شهر`;
 
     let totalPrincipal = 0,
         totalInterest = 0,
@@ -542,20 +542,20 @@ window.calculate = function () {
         tableBody.innerHTML += `
             <tr>
                 <td>${i}</td>
-                <td>dh${principal.toFixed(2)}</td>
-                <td>dh${interest.toFixed(2)}</td>
-                <td>dh${insurance.toFixed(2)}</td>
-                <td>dh${balance.toFixed(2)}</td>
+                <td>درهم${principal.toFixed(2)}</td>
+                <td>درهم${interest.toFixed(2)}</td>
+                <td>درهم${insurance.toFixed(2)}</td>
+                <td>درهم${balance.toFixed(2)}</td>
             </tr>
         `;
     }
 
     const grandTotal = totalPrincipal + totalInterest + totalInsurance + tax;
-    totalDiv.innerHTML = `Principal payé : dh${totalPrincipal.toFixed(2)}<br>
-        Intérêts payés : dh${totalInterest.toFixed(2)}<br>
-        Assurance payée : dh${totalInsurance.toFixed(2)}<br>
-        Taxes : dh${tax.toFixed(2)}<br>
-        <strong>Total général : dh${grandTotal.toFixed(2)}</strong>`;
+    totalDiv.innerHTML = `المبلغ الأساسي المدفوع: درهم${totalPrincipal.toFixed(2)}<br>
+        الفوائد المدفوعة: درهم${totalInterest.toFixed(2)}<br>
+        التأمين المدفوع: درهم${totalInsurance.toFixed(2)}<br>
+        الضرائب: درهم${tax.toFixed(2)}<br>
+        <strong>الإجمالي الكلي: درهم${grandTotal.toFixed(2)}</strong>`;
 };
 
 // New popup functions
