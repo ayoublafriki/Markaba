@@ -1,1 +1,650 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markaba Ride</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- For .ico -->
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <!-- For .svg -->
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<!-- For .png -->
+  <link rel="icon" href="../favicon.png" type="image/png">
+<!-- Optional for Apple devices -->
+  <link rel="apple-touch-icon" href="../favicon.png">
+  <link rel="icon" sizes="96x96" href="../favicon-96x96.png" type="image/png">
+  <link rel="icon" sizes="32x32" href="../favicon-32x32.png" type="image/png">
+  <link rel="icon" sizes="16x16" href="../favicon-16x16.png" type="image/png">
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<style>
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e3a8a;
+            --bg-light: #f4f6f9;
+            --card-shadow: rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: rgba(0, 0, 0, 0.15);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+  background: #fff;
+  color: #111;
+  padding: 0.8em 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.4em;
+  color: var(--primary);
+}
+
+header .logo img {
+  height: 32px;
+  margin-right: 8px;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.auth-buttons button {
+  padding: 8px 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 1em;
+  transition: background 0.3s;
+}
+
+#openModalBtn {
+  background: var(--primary);
+  color: #fff;
+}
+
+#openModalBtn:hover {
+  background: #1e50c7;
+}
+
+#logoutBtn {
+  background: #e53e3e;
+  color: #fff;
+  display: none;
+}
+
+#logoutBtn:hover {
+  background: #c53030;
+}
+
+#userName {
+  font-weight: 600;
+  margin-left: 1em;
+}
+
+        nav a {
+            margin-left: 1.5em;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffb400;
+        }
+
+        #userName {
+            font-weight: 600;
+            margin-left: 1em;
+        }
+
+        #logoutBtn {
+            padding: 8px 16px;
+            background: #e53e3e;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .hero {
+            background: url('https://source.unsplash.com/1600x900/?car-banner') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 8em 2em 5em;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 1.5em;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1em;
+            text-align: center;
+        }
+
+        .circle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border: 2px solid white;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .circle-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .circle-btn .emoji {
+            font-size: 50px;
+            margin-bottom: 5px;
+        }
+
+        .circle-btn span {
+            font-weight: bold;
+            color: white;
+            font-size: 0.9em;
+        }
+        /* Language dropdown */
+.language-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.language-dropdown button {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.language-dropdown button:hover {
+  background: #f5f5f5;
+}
+
+.language-dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 100px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.language-dropdown .dropdown-content a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.language-dropdown .dropdown-content a:hover {
+  background: #f0f0f0;
+}
+
+/* Show dropdown when active */
+.language-dropdown.show .dropdown-content {
+  display: block;
+}
+        
+
+        .why {
+            background: #fff;
+            padding: 3em 5%;
+        }
+
+        .why p {
+            font-size: 1.1em;
+            margin-top: 1em;
+        }
+
+        .testimonials {
+            background: #f1f1f1;
+            padding: 3em 5%;
+        }
+
+        .testimonials p {
+            font-style: italic;
+            font-size: 1.1em;
+            margin-top: 1em;
+        }
+
+        .newsletter input {
+            padding: 0.8em;
+            width: 250px;
+            max-width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .newsletter button {
+            padding: 0.85em 1.5em;
+            border: none;
+            background: #ffb400;
+            color: #111;
+            font-weight: bold;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .newsletter button:hover {
+            background: #e09e00;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            padding: 1em;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .card {
+            max-width: 420px;
+            width: 100%;
+            background: #1e293b;
+            padding: 40px 32px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        .muted {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 14px 0 22px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn.google {
+            background: #4285F4;
+            color: #fff;
+        }
+
+        .btn.google:hover {
+            background: #357ae8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0b141f;
+            color: #e6f9f0;
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: none;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            z-index: 3000;
+        }
+
+
+
+       
+            
+</style>
+
+<body>
+    <header>
+  <div class="logo">
+    <img src="../markaba-icon.png" alt="Markaba Logo">
+  </div>
+  <div class="auth-buttons">
+    <button id="openModalBtn">SignIn</button>
+    <span id="userName"></span>
+    <button id="logoutBtn">Logout</button>
+  </div>
+        <!-- Language Switcher -->
+  <div class="language-dropdown">
+    <button id="langBtn">🇬🇧 EN ▾</button>
+    <div class="dropdown-content">
+      <a href="ar/index.html">🇲🇦 AR</a>
+      <a href="fr/index.html">🇫🇷 FR</a>
+      <a href="index.html">🇬🇧 EN</a>
+    </div>
+  </div>
+    </header>
+
+    <section class="hero">
+        <h1>Request a Ride</h1>
+        <p>Discover it at Markaba App</p>
+        
+    </section>
+
+    
+
+    <section class="newsletter">
+        <h2>Stay Updated</h2>
+        <form id="newsletter-form" action="https://formspree.io/f/xgvzbjpw" method="POST">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2025 Markaba App | About | Contact | Terms</p>
+    </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="card">
+            <button class="close-btn" id="closeModalBtn">&times;</button>
+            <h1>Join Markaba App</h1>
+            <p class="muted">Sign in quickly with your Google account.</p>
+            <button id="signUpBtn" class="btn google">Sign In with Google</button>
+        </div>
+    </div>
+
+   
+                  
+    <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 w-full bg-white border-t shadow-md">
+    <div class="flex justify-around items-center py-3">
+      <a href="../index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 9.75L12 3l9 6.75V21a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 21V9.75z" />
+        </svg>
+        Home
+      </a>
+      <a href="../market/index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v4H3V3zm0 6h18v12H3V9z" />
+        </svg>
+        Market
+      </a>
+      <a href="../order/index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5" />
+        </svg>
+        Order
+      </a>
+      <a href="../ride/index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a4 4 0 01-8 0m22 0a4 4 0 01-8 0M5 13h14l1-3H4l1 3z" />
+        </svg>
+        Ride
+      </a>
+    </div>
+  </nav>
+   
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Firebase configuration: replace these placeholders with your actual project details
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYAoJVCHxdkyWl5TF9RQautlCR-aSbD2k",
+            authDomain: "farikicars.firebaseapp.com",
+            projectId: "farikicars",
+            storageBucket: "farikicars.firebasestorage.app",
+            messagingSenderId: "178935050975",
+            appId: "1:178935050975:web:eac640391a77adb1b02f6a",
+            measurementId: "G-9LVM9ZQ5N5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        const toast = document.getElementById("toast");
+
+        const showToast = (msg) => {
+            toast.style.display = "block";
+            toast.textContent = msg;
+            setTimeout(() => toast.style.display = "none", 4000);
+        };
+
+        const userNameDisplay = document.getElementById("userName");
+        const modalOverlay = document.getElementById("modalOverlay");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        // Auth Modal buttons
+        openModalBtn.addEventListener("click", () => modalOverlay.style.display = "flex");
+        document.getElementById("closeModalBtn").addEventListener("click", () => modalOverlay.style.display = "none");
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) modalOverlay.style.display = "none";
+        });
+
+        // Google Sign-In
+        document.getElementById("signUpBtn").addEventListener("click", async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const displayName = result.user.displayName;
+                userNameDisplay.textContent = `Hello, ${displayName}`;
+                showToast(`Welcome ${displayName}!`);
+                modalOverlay.style.display = "none";
+            } catch (err) {
+                showToast("Error: " + err.message);
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                showToast("You have signed out.");
+            } catch (err) {
+                showToast("Error: " + err.message);
+            }
+        });
+
+        // Stay signed in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userNameDisplay.textContent = `Hello, ${user.displayName}`;
+                openModalBtn.style.display = "none";
+                logoutBtn.style.display = "inline-block";
+            } else {
+                userNameDisplay.textContent = "";
+                openModalBtn.style.display = "inline-block";
+                logoutBtn.style.display = "none";
+            }
+        });
+
+    
+        
+
+
+        // Newsletter form submission handling
+        const newsletterForm = document.getElementById("newsletter-form");
+        newsletterForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    showToast("Thanks for subscribing!");
+                    form.reset();
+                } else {
+                    showToast("Subscription failed. Please try again.");
+                }
+            } catch (error) {
+                showToast("An error occurred. Please check your connection.");
+                console.error("Form submission error:", error);
+            }
+        });
+
+
+        // New popup functions
+        window.openPopup = function (id) {
+            document.getElementById(id).style.display = "flex";
+        }
+
+        window.closePopup = function (id) {
+            document.getElementById(id).style.display = "none";
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+  const langBtn = document.getElementById("langBtn");
+  const langDropdown = document.querySelector(".language-dropdown");
+
+  // Detect current language
+  const currentPath = window.location.pathname;
+  if (currentPath.includes("/ar/")) {
+    langBtn.textContent = "🇲🇦 AR ▾";
+  } else if (currentPath.includes("/fr/")) {
+    langBtn.textContent = "🇫🇷 FR ▾";
+  } else {
+    langBtn.textContent = "🇬🇧 EN ▾";
+  }
+
+  // Toggle dropdown on click
+  langBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    langDropdown.classList.toggle("show");
+  });
+
+  // Close dropdown if clicking outside
+  document.addEventListener("click", function () {
+    langDropdown.classList.remove("show");
+  });
+});
+          // nav.js
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.nav-link');
+  const currentPage = location.pathname.split('/').pop() || 'index.html'; // default to home if blank
+
+  links.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if(linkPage === currentPage) {
+      link.classList.add('text-blue-600');
+      link.classList.remove('text-gray-600', 'hover:text-blue-600');
+    } else {
+      link.classList.remove('text-blue-600');
+      link.classList.add('text-gray-600', 'hover:text-blue-600');
+    }
+  });
+});
+  // --- Remember last nav clicked ---
+const navLinks = document.querySelectorAll(".nav-link");
+
+// When user clicks a nav link, save its href
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    localStorage.setItem("lastNav", link.getAttribute("href"));
+  });
+});
+
+// Highlight the saved nav on load
+const lastNav = localStorage.getItem("lastNav");
+if (lastNav) {
+  navLinks.forEach(link => {
+    if (link.getAttribute("href") === lastNav) {
+      link.classList.add("text-blue-600");  // active color
+    } else {
+      link.classList.remove("text-blue-600");
+    }
+  });
+}
+    </script>
+</body>
+</html>
