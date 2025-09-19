@@ -40,10 +40,12 @@
         }
 
         body {
-            font-family: 'Roboto', 'Inter', sans-serif;
-            background: #f8f9fa;
-            color: #333;
-        }
+    font-family: 'Roboto', 'Inter', sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    padding-top: 64px;    /* space for header */
+    padding-bottom: 64px; /* space for bottom nav */
+}
 
         a {
             text-decoration: none;
@@ -680,6 +682,15 @@ if (lastNav) {
     }
   });
 }
+        // fixing clipped page 
+       document.addEventListener("DOMContentLoaded", () => {
+  const header = document.querySelector("header");
+  const nav = document.querySelector("nav.fixed.bottom-0");
+  const body = document.body;
+
+  if (header) body.style.paddingTop = header.offsetHeight + "px";
+  if (nav) body.style.paddingBottom = nav.offsetHeight + "px";
+}); 
     </script>
 </body>
 </html>
