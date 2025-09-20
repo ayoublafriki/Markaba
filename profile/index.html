@@ -11,14 +11,17 @@
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
   <!-- Profile Section -->
-  <div class="flex flex-col items-center py-10 bg-white shadow cursor-pointer" id="profileTrigger">
+  <div class="flex flex-col items-center py-10 bg-white shadow">
     <img id="profilePic" src="https://via.placeholder.com/150" 
          alt="Profile Picture" class="w-24 h-24 rounded-full border-4 border-blue-500 object-cover">
     <h2 id="profileName" class="mt-4 text-xl font-bold">Guest</h2>
+    <button id="openModalBtn" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+      Sign In
+    </button>
   </div>
 
   <!-- Profile Menu -->
- <main class="flex-grow container mx-auto px-4 py-6 pb-24">
+  <main class="flex-grow container mx-auto px-4 py-6 pb-28">
     <div class="bg-white rounded-xl shadow divide-y">
       <a href="../support/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
         <span>Customer Support</span><span>›</span>
@@ -49,6 +52,18 @@
       </button>
     </div>
   </main>
+
+  <!-- SignIn Modal -->
+  <div class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50" id="modalOverlay">
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full relative shadow-lg">
+      <button id="closeModalBtn" class="absolute top-3 right-3 text-2xl font-bold text-gray-600">&times;</button>
+      <h1 class="text-xl font-bold mb-3 text-center">Join Markaba App</h1>
+      <p class="text-gray-500 text-center mb-6">Sign in quickly with your Google account.</p>
+      <button id="signUpBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold">
+        Sign In with Google
+      </button>
+    </div>
+  </div>
 
   <!-- Bottom Navigation -->
   <nav class="fixed bottom-0 left-0 w-full bg-white border-t shadow-md">
@@ -92,16 +107,6 @@
     </div>
   </nav>
 
-  <!-- Sign-In Modal -->
-  <div id="signinModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
-    <div class="bg-white rounded-lg shadow-lg w-80 p-6 text-center">
-      <h2 class="text-xl font-bold mb-4">Sign In</h2>
-      <p class="text-gray-600 mb-4">Continue with Google to access your account.</p>
-      <button id="googleSignInBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Sign in with Google</button>
-      <button id="closeModal" class="mt-4 text-gray-500 hover:text-gray-700">Cancel</button>
-    </div>
-  </div>
-
   <!-- Firebase Auth -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -119,50 +124,77 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+    const googleProvider = new GoogleAuthProvider();
 
     const profileName = document.getElementById("profileName");
     const profilePic = document.getElementById("profilePic");
     const logoutBtn = document.getElementById("logoutBtn");
-    const signinModal = document.getElementById("signinModal");
-    const profileTrigger = document.getElementById("profileTrigger");
-    const googleSignInBtn = document.getElementById("googleSignInBtn");
-    const closeModal = document.getElementById("closeModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const signUpBtn = document.getElementById("signUpBtn");
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         profileName.textContent = user.displayName || "User";
         profilePic.src = user.photoURL || "https://via.placeholder.com/150";
         logoutBtn.style.display = "flex";
+        openModalBtn.style.display = "none";
       } else {
         profileName.textContent = "Guest";
         profilePic.src = "https://via.placeholder.com/150";
         logoutBtn.style.display = "none";
+        openModalBtn.style.display = "inline-block";
       }
-    });
-
-    profileTrigger.addEventListener("click", () => {
-      if (!auth.currentUser) {
-        signinModal.classList.remove("hidden");
-      }
-    });
-
-    googleSignInBtn.addEventListener("click", async () => {
-      try {
-        await signInWithPopup(auth, provider);
-        signinModal.classList.add("hidden");
-      } catch (error) {
-        alert("Sign in failed: " + error.message);
-      }
-    });
-
-    closeModal.addEventListener("click", () => {
-      signinModal.classList.add("hidden");
     });
 
     logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
-      window.location.href = "../index.html"; 
+      try {
+        await signOut(auth);
+        profileName.textContent = "Guest";
+        profilePic.src = "https://via.placeholder.com/150";
+        logoutBtn.style.display = "none";
+        openModalBtn.style.display = "inline-block";
+        alert("You have signed out.");
+      } catch (err) {
+        console.error("Sign out error:", err);
+        alert("Error signing out: " + err.message);
+      }
+    });
+
+    // Sign-in modal controls
+    openModalBtn.addEventListener("click", () => {
+      modalOverlay.classList.remove("hidden");
+      modalOverlay.classList.add("flex");
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      modalOverlay.classList.add("hidden");
+      modalOverlay.classList.remove("flex");
+    });
+
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.add("hidden");
+        modalOverlay.classList.remove("flex");
+      }
+    });
+
+    signUpBtn.addEventListener("click", async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        profileName.textContent = user.displayName || "User";
+        profilePic.src = user.photoURL || "https://via.placeholder.com/150";
+        openModalBtn.style.display = "none";
+        logoutBtn.style.display = "flex";
+        modalOverlay.classList.add("hidden");
+        modalOverlay.classList.remove("flex");
+        alert(`Welcome ${user.displayName}!`);
+      } catch (err) {
+        console.error("Sign in error:", err);
+        alert("Error signing in: " + err.message);
+      }
     });
   </script>
 </body>
