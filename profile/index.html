@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markaba | Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
+  <!-- Profile Section -->
+  <div class="flex flex-col items-center py-10 bg-white shadow">
+    <img id="profilePic" src="https://via.placeholder.com/150" 
+         alt="Profile Picture" class="w-24 h-24 rounded-full border-4 border-blue-500 object-cover">
+    <h2 id="profileName" class="mt-4 text-xl font-bold">Guest</h2>
+  </div>
+
+  <!-- Profile Menu -->
+ <main class="flex-grow container mx-auto px-4 py-6 pb-24">
+    <div class="bg-white rounded-xl shadow divide-y">
+      <a href="../support/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Customer Support</span><span>›</span>
+      </a>
+      <a href="../vehicles/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Saved Vehicles</span><span>›</span>
+      </a>
+      <a href="../orders/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Orders History</span><span>›</span>
+      </a>
+      <a href="../rides/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Rides History</span><span>›</span>
+      </a>
+      <a href="../prime/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Markaba Prime</span><span>›</span>
+      </a>
+      <a href="../language/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Language</span><span>›</span>
+      </a>
+      <a href="../faq/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>FAQ</span><span>›</span>
+      </a>
+      <a href="../notifications/index.html" class="flex justify-between items-center px-4 py-3 hover:bg-gray-50">
+        <span>Notifications</span><span>›</span>
+      </a>
+      <button id="logoutBtn" class="w-full text-left flex justify-between items-center px-4 py-3 text-red-600 hover:bg-gray-50">
+        <span>Log out</span><span>›</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 w-full bg-white border-t shadow-md">
+    <div class="flex justify-around items-center py-3">
+      <a href="../index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 9.75L12 3l9 6.75V21a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 21V9.75z" />
+        </svg>
+        Home
+      </a>
+      <a href="../market/index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v4H3V3zm0 6h18v12H3V9z" />
+        </svg>
+        Market
+      </a>
+      <a href="../order/index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5" />
+        </svg>
+        Order
+      </a>
+      <a href="../ride/index.html" class="flex flex-col items-center text-sm nav-link">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a4 4 0 01-8 0m22 0a4 4 0 01-8 0M5 13h14l1-3H4l1 3z" />
+        </svg>
+        Ride
+      </a>
+      <a href="../index.html" class="flex flex-col items-center text-sm nav-link text-blue-600">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.121 17.804A9.953 9.953 0 0112 15c2.21 0 4.254.72 5.879 1.928M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Profile
+      </a>
+    </div>
+  </nav>
+
+  <!-- Firebase Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBYAoJVCHxdkyWl5TF9RQautlCR-aSbD2k",
+      authDomain: "farikicars.firebaseapp.com",
+      projectId: "farikicars",
+      storageBucket: "farikicars.firebasestorage.app",
+      messagingSenderId: "178935050975",
+      appId: "1:178935050975:web:eac640391a77adb1b02f6a",
+      measurementId: "G-9LVM9ZQ5N5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const profileName = document.getElementById("profileName");
+    const profilePic = document.getElementById("profilePic");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        profileName.textContent = user.displayName || "User";
+        profilePic.src = user.photoURL || "https://via.placeholder.com/150";
+        logoutBtn.style.display = "flex";
+      } else {
+        profileName.textContent = "Guest";
+        profilePic.src = "https://via.placeholder.com/150";
+        logoutBtn.style.display = "none";
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.href = "../index.html"; // redirect after logout
+    });
+  </script>
+</body>
+</html>
