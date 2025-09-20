@@ -207,7 +207,7 @@
            viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a4 4 0 01-8 0m22 0a4 4 0 01-8 0M5 13h14l1-3H4l1 3z" />
       </svg>
-      الرحلة
+      توصيل
     </a>
     <a href="../../profile/index.html" class="flex flex-col items-center text-sm nav-link">
       <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
@@ -636,6 +636,43 @@ document.addEventListener("DOMContentLoaded", function () {
         langDropdown.classList.remove("show");
     });
 });
+             // nav.js
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.nav-link');
+  const currentPage = location.pathname.split('/').pop() || '../../index.html'; // default to home if blank
+
+  links.forEach(link => {
+    const linkPage = link.getAttribute('href');
+    if(linkPage === currentPage) {
+      link.classList.add('text-blue-600');
+      link.classList.remove('text-gray-600', 'hover:text-blue-600');
+    } else {
+      link.classList.remove('text-blue-600');
+      link.classList.add('text-gray-600', 'hover:text-blue-600');
+    }
+  });
+});
+  // --- Remember last nav clicked ---
+const navLinks = document.querySelectorAll(".nav-link");
+
+// When user clicks a nav link, save its href
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    localStorage.setItem("lastNav", link.getAttribute("href"));
+  });
+});
+
+// Highlight the saved nav on load
+const lastNav = localStorage.getItem("lastNav");
+if (lastNav) {
+  navLinks.forEach(link => {
+    if (link.getAttribute("href") === lastNav) {
+      link.classList.add("text-blue-600");  // active color
+    } else {
+      link.classList.remove("text-blue-600");
+    }
+  });
+} 
 </script>
 </body>
 </html>
