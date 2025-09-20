@@ -10,6 +10,11 @@
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
+  <!-- Header-like Notification -->
+  <div id="headerNotification" class="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl shadow-md opacity-0 pointer-events-none transition-all duration-500 z-50">
+    Notification
+  </div>
+
   <!-- Profile Section -->
   <div class="flex flex-col items-center py-10 bg-white shadow">
     <img id="profilePic" src="https://via.placeholder.com/150" 
@@ -96,7 +101,7 @@
         </svg>
         Ride
       </a>
-      <a href="index.html" class="flex flex-col items-center text-sm nav-link text-blue-600">
+      <a href="../index.html" class="flex flex-col items-center text-sm nav-link text-blue-600">
         <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
              viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -108,94 +113,118 @@
   </nav>
 
   <!-- Firebase Auth -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBYAoJVCHxdkyWl5TF9RQautlCR-aSbD2k",
-      authDomain: "farikicars.firebaseapp.com",
-      projectId: "farikicars",
-      storageBucket: "farikicars.firebasestorage.app",
-      messagingSenderId: "178935050975",
-      appId: "1:178935050975:web:eac640391a77adb1b02f6a",
-      measurementId: "G-9LVM9ZQ5N5"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyBYAoJVCHxdkyWl5TF9RQautlCR-aSbD2k",
+    authDomain: "farikicars.firebaseapp.com",
+    projectId: "farikicars",
+    storageBucket: "farikicars.firebasestorage.app",
+    messagingSenderId: "178935050975",
+    appId: "1:178935050975:web:eac640391a77adb1b02f6a",
+    measurementId: "G-9LVM9ZQ5N5"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
 
-    const profileName = document.getElementById("profileName");
-    const profilePic = document.getElementById("profilePic");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const openModalBtn = document.getElementById("openModalBtn");
-    const modalOverlay = document.getElementById("modalOverlay");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-    const signUpBtn = document.getElementById("signUpBtn");
+  const profileName = document.getElementById("profileName");
+  const profilePic = document.getElementById("profilePic");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const openModalBtn = document.getElementById("openModalBtn");
+  const modalOverlay = document.getElementById("modalOverlay");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+  const signUpBtn = document.getElementById("signUpBtn");
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        profileName.textContent = user.displayName || "User";
-        profilePic.src = user.photoURL || "https://via.placeholder.com/150";
-        logoutBtn.style.display = "flex";
-        openModalBtn.style.display = "none";
-      } else {
-        profileName.textContent = "Guest";
-        profilePic.src = "https://via.placeholder.com/150";
-        logoutBtn.style.display = "none";
-        openModalBtn.style.display = "inline-block";
-      }
-    });
+  // --- Header Notification Function ---
+  function showHeaderMessage(message, type = "blue") {
+    let notification = document.getElementById("headerNotification");
+    if (!notification) {
+      notification = document.createElement("div");
+      notification.id = "headerNotification";
+      document.body.appendChild(notification);
+    }
 
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        profileName.textContent = "Guest";
-        profilePic.src = "https://via.placeholder.com/150";
-        logoutBtn.style.display = "none";
-        openModalBtn.style.display = "inline-block";
-        alert("You have signed out.");
-      } catch (err) {
-        console.error("Sign out error:", err);
-        alert("Error signing out: " + err.message);
-      }
-    });
+    notification.textContent = message;
+    notification.className = `fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 px-6 py-3 rounded-xl shadow-md opacity-100 pointer-events-auto transition-all duration-500 z-50 ${
+      type === "red" ? "bg-red-600" : "bg-blue-600"
+    } text-white`;
 
-    // Sign-in modal controls
-    openModalBtn.addEventListener("click", () => {
-      modalOverlay.classList.remove("hidden");
-      modalOverlay.classList.add("flex");
-    });
+    setTimeout(() => {
+      notification.className = `fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 px-6 py-3 rounded-xl shadow-md opacity-0 pointer-events-none transition-all duration-500 z-50 ${
+        type === "red" ? "bg-red-600" : "bg-blue-600"
+      } text-white`;
+    }, 3000);
+  }
 
-    closeModalBtn.addEventListener("click", () => {
+  // --- Monitor Auth State ---
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      profileName.textContent = user.displayName || "User";
+      profilePic.src = user.photoURL || "https://via.placeholder.com/150";
+      logoutBtn.style.display = "flex";
+      openModalBtn.style.display = "none";
+    } else {
+      profileName.textContent = "Guest";
+      profilePic.src = "https://via.placeholder.com/150";
+      logoutBtn.style.display = "none";
+      openModalBtn.style.display = "inline-block";
+    }
+  });
+
+  // --- Logout ---
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      profileName.textContent = "Guest";
+      profilePic.src = "https://via.placeholder.com/150";
+      logoutBtn.style.display = "none";
+      openModalBtn.style.display = "inline-block";
+      showHeaderMessage("You have signed out.", "red");
+    } catch (err) {
+      console.error("Sign out error:", err);
+      showHeaderMessage("Error signing out: " + err.message, "red");
+    }
+  });
+
+  // --- Sign-in Modal Controls ---
+  openModalBtn.addEventListener("click", () => {
+    modalOverlay.classList.remove("hidden");
+    modalOverlay.classList.add("flex");
+  });
+
+  closeModalBtn.addEventListener("click", () => {
+    modalOverlay.classList.add("hidden");
+    modalOverlay.classList.remove("flex");
+  });
+
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) {
       modalOverlay.classList.add("hidden");
       modalOverlay.classList.remove("flex");
-    });
+    }
+  });
 
-    modalOverlay.addEventListener("click", (e) => {
-      if (e.target === modalOverlay) {
-        modalOverlay.classList.add("hidden");
-        modalOverlay.classList.remove("flex");
-      }
-    });
-
-    signUpBtn.addEventListener("click", async () => {
-      try {
-        const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-        profileName.textContent = user.displayName || "User";
-        profilePic.src = user.photoURL || "https://via.placeholder.com/150";
-        openModalBtn.style.display = "none";
-        logoutBtn.style.display = "flex";
-        modalOverlay.classList.add("hidden");
-        modalOverlay.classList.remove("flex");
-        alert(`Welcome ${user.displayName}!`);
-      } catch (err) {
-        console.error("Sign in error:", err);
-        alert("Error signing in: " + err.message);
-      }
-    });
-  </script>
+  // --- Sign In with Google ---
+  signUpBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      profileName.textContent = user.displayName || "User";
+      profilePic.src = user.photoURL || "https://via.placeholder.com/150";
+      openModalBtn.style.display = "none";
+      logoutBtn.style.display = "flex";
+      modalOverlay.classList.add("hidden");
+      modalOverlay.classList.remove("flex");
+      showHeaderMessage(`Welcome ${user.displayName}!`, "blue");
+    } catch (err) {
+      console.error("Sign in error:", err);
+      showHeaderMessage("Error signing in: " + err.message, "red");
+    }
+  });
+</script>
 </body>
 </html>
