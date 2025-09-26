@@ -377,13 +377,86 @@ header .logo img {
             z-index: 3000;
         }
 
+       /* Center Food element */
+    .absolute.z-20 {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
+    .orbit-egg {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      background: #fff7e6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: grab;
+      text-align: center;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+    }
+    
+    .egg-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      transition: transform 0.2s ease, background 0.2s ease;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    
+    .egg-content span {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    
+    .orbit-egg:hover .egg-content {
+      transform: scale(1.15);
+      background: #ffe0b2;
+    }
+
+    .egg-content a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    #orbit {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      position: absolute;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
 
        
             
 </style>
 
-<body>
+<body class="bg-[#e0f4ff] min-h-screen m-0 p-0">
     <header>
   <div class="logo">
     <img src="../markaba-icon.png" alt="Markaba Logo">
@@ -404,12 +477,51 @@ header .logo img {
   </div>
     </header>
 
-    <section class="hero">
-        <h1>Order whatever you want</h1>
-        <p>Discover it at Markaba App</p>
-        <h2>Coming soon</h2>
-    </section>
+  <!-- MAIN CONTENT -->
+ <main class="flex-1 flex items-center justify-center p-6 mt-20">
 
+    <!-- Spinning Eggs Section -->
+    <div class="relative flex items-center justify-center h-[400px] w-full max-w-lg bg-[#e0f4ff] rounded-2xl overflow-visible">
+      
+      <!-- Center Egg (Food) -->
+      <div class="absolute z-20 w-28 h-28 rounded-full bg-yellow-400 shadow-lg flex items-center justify-center">
+        <a href="food.html" class="flex flex-col items-center justify-center w-full h-full rounded-full text-black no-underline">
+          🍔
+          <span class="text-sm font-bold">Food</span>
+        </a>
+      </div>
+
+      <!-- Orbiting Eggs Container -->
+      <div id="orbit" class="absolute">
+        <div class="orbit-egg" style="--i:0">
+          <div class="egg-content">
+            <a href="shops.html">🛍️<span>Shops</span></a>
+          </div>
+        </div>
+        <div class="orbit-egg" style="--i:1">
+          <div class="egg-content">
+            <a href="groceries.html">🛒<span>Groceries</span></a>
+          </div>
+        </div>
+        <div class="orbit-egg" style="--i:2">
+          <div class="egg-content">
+            <a href="mall.html">🏬<span>Mall</span></a>
+          </div>
+        </div>
+        <div class="orbit-egg" style="--i:3">
+          <div class="egg-content">
+            <a href="pharma.html">💊<span>Pharma & Beauty</span></a>
+          </div>
+        </div>
+        <div class="orbit-egg" style="--i:4">
+          <div class="egg-content">
+            <a href="delivery.html">📦<span>Delivery</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
     
 
     
@@ -544,9 +656,107 @@ header .logo img {
             }
         });
 
-    
-        
+    // the circle eggs
+        const orbit = document.getElementById("orbit");
+    const eggs = document.querySelectorAll(".orbit-egg");
+    let isDragging = false;
+    let startX, startY, startAngle;
+    let velocity = 0;
+    let lastAngle = 0;
+    let animationFrame;
+    const radius = 121; // Distance from center
+    const totalEggs = eggs.length;
 
+    // Initialize egg positions
+    function positionEggs(rotation = 0) {
+      eggs.forEach((egg, i) => {
+        const angle = (i * (360 / totalEggs) + rotation) * (Math.PI / 180);
+        const x = radius * Math.cos(angle);
+        const y = radius * Math.sin(angle);
+        
+        egg.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${-rotation}deg)`;
+      });
+    }
+
+    // Get current rotation from transform matrix
+    function getRotation(el) {
+      const st = window.getComputedStyle(el, null);
+      const tr = st.getPropertyValue("transform");
+      if (tr === "none") return 0;
+      const values = tr.split('(')[1].split(')')[0].split(',');
+      const a = values[0];
+      const b = values[1];
+      return Math.round(Math.atan2(b, a) * (180 / Math.PI));
+    }
+
+    // Start dragging
+    function startDrag(e) {
+      cancelAnimationFrame(animationFrame);
+      isDragging = true;
+      startX = (e.touches ? e.touches[0].clientX : e.clientX);
+      startY = (e.touches ? e.touches[0].clientY : e.clientY);
+
+      const rect = orbit.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      startAngle = Math.atan2(startY - cy, startX - cx);
+      orbit.dataset.rotation = getRotation(orbit) || 0;
+      lastAngle = Number(orbit.dataset.rotation);
+
+      document.addEventListener("mousemove", onDrag);
+      document.addEventListener("mouseup", stopDrag);
+      document.addEventListener("touchmove", onDrag);
+      document.addEventListener("touchend", stopDrag);
+    }
+     // Handle dragging
+    function onDrag(e) {
+      if (!isDragging) return;
+      const moveX = (e.touches ? e.touches[0].clientX : e.clientX);
+      const moveY = (e.touches ? e.touches[0].clientY : e.clientY);
+
+      const rect = orbit.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      const currentAngle = Math.atan2(moveY - cy, moveX - cx);
+      const angleDiff = (currentAngle - startAngle) * (180 / Math.PI);
+
+      const newRotation = Number(orbit.dataset.rotation) + angleDiff;
+      orbit.style.transform = `translate(-50%, -50%) rotate(${newRotation}deg)`;
+      positionEggs(newRotation);
+
+      velocity = newRotation - lastAngle;
+      lastAngle = newRotation;
+    }
+
+    // Stop dragging and apply inertia
+    function stopDrag() {
+      isDragging = false;
+      document.removeEventListener("mousemove", onDrag);
+      document.removeEventListener("mouseup", stopDrag);
+      document.removeEventListener("touchmove", onDrag);
+      document.removeEventListener("touchend", stopDrag);
+
+      function inertia() {
+        let currentRotation = getRotation(orbit);
+        currentRotation += velocity;
+        orbit.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg)`;
+        positionEggs(currentRotation);
+
+        velocity *= 0.95;
+        if (Math.abs(velocity) > 0.1) {
+          animationFrame = requestAnimationFrame(inertia);
+        }
+      }
+      inertia();
+    }
+     // Event listeners
+    orbit.addEventListener("mousedown", startDrag);
+    orbit.addEventListener("touchstart", startDrag);
+
+    // Initialize positions
+    positionEggs(0);
 
         // Newsletter form submission handling
         const newsletterForm = document.getElementById("newsletter-form");
